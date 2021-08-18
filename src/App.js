@@ -41,7 +41,7 @@ function App() {
     // access the Parse Object attributes
     console.log("Message: ", Message.get("content"));
     console.log("Message id: ", Message.id);
-    setMessage(Message);
+    setMessage(Message.content);
   }
 
   return (
