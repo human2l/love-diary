@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Deta } from "deta";
 import { Navbar } from "./components/Navbar";
 import { NewDiary } from "./pages/NewDiary";
