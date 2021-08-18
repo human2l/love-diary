@@ -1,43 +1,33 @@
 import { useState } from "react";
 import { Deta } from "deta";
+import { Navbar } from "./components/Navbar";
+import { NewDiary } from "./pages/NewDiary";
+import { styled } from "@material-ui/core/styles";
 
 const deta = Deta("c08ztmvr_VzzQTNHLfBGn1r7UYAnYTP4Nd1pCwKXv");
-// name your DB
-const db = deta.Base("humans");
+const db = deta.Base("diarys");
+
+const Container = styled("div")({
+  height: "100vh",
+});
 
 function App() {
-  const [message, setMessage] = useState("");
-  const onSubmit = () => {
-    addMessage();
-  };
-  const onFind = () => {
-    fetchMessage();
-  };
-
-  async function addMessage() {
-    db.put({
-      name: message,
-      title: "",
-      has_visor: true,
+  async function submitNewDiary(newDiary) {
+    const result = await db.put({
+      content: newDiary,
     });
+    console.log(result);
   }
 
-  async function fetchMessage() {}
-
   return (
-    <div>
-      <input
-        type="text"
-        id="name"
-        name="name"
-        onChange={(e) => {
-          setMessage(e.target.value);
+    <Container>
+      <NewDiary
+        addNewDiary={(newDiary) => {
+          submitNewDiary(newDiary);
         }}
       />
-      <button onClick={onSubmit}>Submit</button>
-      <button onClick={onFind}>Find</button>
-      <div>{message}</div>
-    </div>
+      <Navbar />
+    </Container>
   );
 }
 
