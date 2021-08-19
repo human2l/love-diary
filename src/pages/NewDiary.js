@@ -3,7 +3,6 @@ import { useState } from "react";
 import { styled } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
 
 const deta = Deta("c08ztmvr_VzzQTNHLfBGn1r7UYAnYTP4Nd1pCwKXv");
 const db = deta.Base("diarys");
@@ -18,26 +17,26 @@ const DiaryTextField = styled(TextField)({
   width: "100%",
 });
 
-const ButtonContainer = styled("div")({
+const ControlContainer = styled("div")({
   left: 0,
   width: "100%",
   display: "flex",
-  justifyContent: "center",
+  justifyContent: "space-around",
   position: "fixed",
   marginLeft: "auto",
   bottom: 60,
 });
 
-const WarningMessageContainer = styled("div")({
-  marginTop: 10,
-  display: "flex",
-  justifyContent: "center",
-});
+// const WarningMessageContainer = styled("div")({
+//   marginTop: 10,
+//   display: "flex",
+//   justifyContent: "center",
+// });
 
-const WarningMessage = styled(Typography)({
-  variant: "h3",
-  color: "#ec407a",
-});
+// const WarningMessage = styled(Typography)({
+//   variant: "h3",
+//   color: "#ec407a",
+// });
 
 const getCurrentDate = () => {
   let today = new Date();
@@ -50,15 +49,19 @@ const getCurrentDate = () => {
 };
 
 export const NewDiary = () => {
-  const [newDiaryContent, setNewDiaryContent] = useState("");
+  let defaultDiaryContent = localStorage.getItem("diaryDraft");
+  if (defaultDiaryContent === undefined || defaultDiaryContent === null)
+    defaultDiaryContent = "";
+  const [newDiaryContent, setNewDiaryContent] = useState(defaultDiaryContent);
   const [submitted, setSubmitted] = useState(false);
   const [warningMessage, setWarningMessage] = useState("");
 
   const handleChange = (event) => {
+    localStorage.setItem("diaryDraft", event.target.value);
     setNewDiaryContent(event.target.value);
   };
 
-  const submitDiary = async () => {
+  const submitDiary = async (author) => {
     const { day, month, year, time } = getCurrentDate();
     setSubmitted(true);
     setWarningMessage("正在保存...");
@@ -69,9 +72,11 @@ export const NewDiary = () => {
         month,
         year,
         time,
+        author,
       });
       console.log(result);
       setWarningMessage("已保存");
+      localStorage.removeItem("diaryDraft");
     } catch (error) {
       setWarningMessage("保存失败，原因：" + error);
     }
@@ -84,24 +89,33 @@ export const NewDiary = () => {
           label="新的心情"
           placeholder="写点什么好呢"
           multiline
-          variant="filled"
+          variant="outlined"
           maxRows={(window.innerHeight - 56) / 23}
           value={newDiaryContent}
+          helperText={warningMessage}
         />
-        <WarningMessageContainer>
+        {/* <WarningMessageContainer>
           <WarningMessage>{warningMessage}</WarningMessage>
-        </WarningMessageContainer>
+        </WarningMessageContainer> */}
         {!submitted && (
-          <ButtonContainer>
+          <ControlContainer>
             <Button
               size="large"
               variant="contained"
               color="primary"
-              onClick={submitDiary}
+              onClick={() => submitDiary("Dan")}
             >
-              写好了
+              蛋蛋写好了
             </Button>
-          </ButtonContainer>
+            <Button
+              size="large"
+              variant="contained"
+              color="secondary"
+              onClick={() => submitDiary("Kai")}
+            >
+              凯凯写好了
+            </Button>
+          </ControlContainer>
         )}
       </NewDiaryForm>
     </NewDiaryContainer>

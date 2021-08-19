@@ -13,20 +13,43 @@ const TitleContainer = styled("div")({
 });
 
 export const Diary = (props) => {
+  const content = props.diaryContent.split("\n").map((line, index) => {
+    return (
+      <span key={line + index}>
+        {line}
+        <br />
+      </span>
+    );
+  });
+
   return (
     <CardContainer>
       <Card>
-        <CardContent>
-          <TitleContainer>
-            <Typography variant="h6" color="textPrimary" gutterBottom>
-              {props.diaryAuthor}
+        {props.diaryAuthor === "Dan" ? (
+          <CardContent>
+            <TitleContainer>
+              <Typography variant="h6" color="primary" gutterBottom>
+                蛋蛋：
+              </Typography>
+              <Typography color="textSecondary">{props.diaryDate}</Typography>
+            </TitleContainer>
+            <Typography color="primary" variant="body2" component="p">
+              {content}
             </Typography>
-            <Typography color="textSecondary">{props.diaryDate}</Typography>
-          </TitleContainer>
-          <Typography variant="body2" component="p">
-            {props.diaryContent}
-          </Typography>
-        </CardContent>
+          </CardContent>
+        ) : (
+          <CardContent>
+            <TitleContainer>
+              <Typography variant="h6" color="secondary" gutterBottom>
+                凯凯：
+              </Typography>
+              <Typography color="textSecondary">{props.diaryDate}</Typography>
+            </TitleContainer>
+            <Typography color="secondary" variant="body2" component="p">
+              {content}
+            </Typography>
+          </CardContent>
+        )}
       </Card>
     </CardContainer>
   );

@@ -1,10 +1,11 @@
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { createTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
-import { pink } from "@material-ui/core/colors";
+import { blue, common, pink } from "@material-ui/core/colors";
 import { Navbar } from "./components/Navbar";
 import { NewDiary } from "./pages/NewDiary";
 import { Diarys } from "./pages/Diarys";
+import { Dashboard } from "./pages/Dashboard";
 
 import { styled } from "@material-ui/core/styles";
 
@@ -12,6 +13,12 @@ const theme = createTheme({
   palette: {
     primary: {
       main: pink[400],
+    },
+    secondary: {
+      main: blue[400],
+    },
+    text: {
+      primary: common.white,
     },
   },
 });
@@ -27,7 +34,7 @@ function App() {
         <Router>
           <Switch>
             <Route exact path="/">
-              Dashboard
+              <Dashboard />
             </Route>
             <Route path="/new_diary">
               <NewDiary />

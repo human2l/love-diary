@@ -38,7 +38,7 @@ export const Diarys = () => {
         return (
           <Diary
             key={diary.key}
-            diaryAuthor="蛋蛋："
+            diaryAuthor={diary.author}
             diaryDate={diaryDate}
             diaryContent={diary.content}
           />
