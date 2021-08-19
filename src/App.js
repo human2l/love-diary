@@ -1,32 +1,45 @@
-import { Deta } from "deta";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { createTheme } from "@material-ui/core/styles";
+import { ThemeProvider } from "@material-ui/styles";
+import { pink } from "@material-ui/core/colors";
 import { Navbar } from "./components/Navbar";
 import { NewDiary } from "./pages/NewDiary";
+import { Diarys } from "./pages/Diarys";
+
 import { styled } from "@material-ui/core/styles";
 
-const deta = Deta("c08ztmvr_VzzQTNHLfBGn1r7UYAnYTP4Nd1pCwKXv");
-const db = deta.Base("diarys");
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: pink[400],
+    },
+  },
+});
 
-const Container = styled("div")({
+const AppContainer = styled("div")({
   height: "100vh",
 });
 
 function App() {
-  async function submitNewDiary(newDiary) {
-    const result = await db.put({
-      content: newDiary,
-    });
-    console.log(result);
-  }
-
   return (
-    <Container>
-      <NewDiary
-        addNewDiary={(newDiary) => {
-          submitNewDiary(newDiary);
-        }}
-      />
-      <Navbar />
-    </Container>
+    <ThemeProvider theme={theme}>
+      <AppContainer>
+        <Router>
+          <Switch>
+            <Route exact path="/">
+              Dashboard
+            </Route>
+            <Route path="/new_diary">
+              <NewDiary />
+            </Route>
+            <Route path="/diarys">
+              <Diarys />
+            </Route>
+          </Switch>
+          <Navbar />
+        </Router>
+      </AppContainer>
+    </ThemeProvider>
   );
 }
 

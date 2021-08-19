@@ -55,6 +55,7 @@ export const NewDiary = () => {
       let result = await db.put({
         content: newDiaryContent,
       });
+      console.log(result);
       setWarningMessage("已保存");
     } catch (error) {
       setWarningMessage("保存失败，原因：" + error);

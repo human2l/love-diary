@@ -1,3 +1,4 @@
+import { useHistory } from "react-router-dom";
 import { useState } from "react";
 import { styled } from "@material-ui/core/styles";
 import BottomNavigation from "@material-ui/core/BottomNavigation";
@@ -6,7 +7,9 @@ import CreateIcon from "@material-ui/icons/Create";
 import AssignmentIcon from "@material-ui/icons/Assignment";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 
-export const Navbar = () => {
+export const Navbar = (props) => {
+  let history = useHistory();
+
   const Navbar = styled(BottomNavigation)({
     position: "fixed",
     width: "100%",
@@ -15,13 +18,25 @@ export const Navbar = () => {
     height: "56px",
   });
 
-  const [value, setValue] = useState(0);
-
+  const [value, setValue] = useState(2);
   return (
     <Navbar
       value={value}
       onChange={(event, newValue) => {
         setValue(newValue);
+        switch (newValue) {
+          case 0:
+            history.push("/new_diary");
+            break;
+          case 1:
+            history.push("/diarys");
+            break;
+          case 2:
+            history.push("/");
+            break;
+          default:
+            break;
+        }
       }}
       showLabels
     >
