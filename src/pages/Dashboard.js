@@ -23,11 +23,15 @@ function howLong(time1, time2) {
 }
 
 const DashboardContainer = styled("div")({
-  marginTop: 50,
+  height: "100vh",
+  paddingBottom: 65,
   display: "flex",
   flexDirection: "column",
-  justifyContent: "center",
+  //   justifyContent: "center",
   alignItems: "center",
+  //   backgroundImage:
+  //     "url('https://i.pinimg.com/564x/be/dc/52/bedc522cdab3546780880b53096e4caa.jpg')",
+  //   backgroundSize: "cover",
 });
 
 const CounterContainer = styled("div")({
@@ -37,6 +41,7 @@ const CounterContainer = styled("div")({
 });
 
 const Image = styled("img")({
+  marginTop: 50,
   width: "auto",
   height: "auto",
   maxWidth: 100,

@@ -8,6 +8,7 @@ const deta = Deta("c08ztmvr_VzzQTNHLfBGn1r7UYAnYTP4Nd1pCwKXv");
 const db = deta.Base("diarys");
 
 const NewDiaryContainer = styled("div")({
+  paddingTop: 20,
   paddingBottom: 65,
 });
 
