@@ -34,7 +34,9 @@ export const Diarys = () => {
     <DiarysContainer>
       {isLoading && <div>正在加载...</div>}
       {diarys.map((diary) => {
-        const diaryDate = `${diary.day}/${diary.month}/${diary.year}`;
+        let timeZone = "";
+        diary.author === "Dan" ? (timeZone = "中") : (timeZone = "澳");
+        const diaryDate = `${timeZone}  ${diary.hour}:${diary.minute}  ${diary.day}/${diary.month}/${diary.year}`;
         return (
           <Diary
             key={diary.key}

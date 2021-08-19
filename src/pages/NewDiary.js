@@ -41,12 +41,14 @@ const ControlContainer = styled("div")({
 
 const getCurrentDate = () => {
   let today = new Date();
-  let dd = String(today.getDate()).padStart(2, "0");
-  let mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
-  let yyyy = today.getFullYear();
+  let minute = String(today.getMinutes()).padStart(2, "0");
+  let hour = String(today.getHours()).padStart(2, "0");
+  let day = String(today.getDate()).padStart(2, "0");
+  let month = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
+  let year = today.getFullYear();
   let time = today.getTime();
-  today = dd + "/" + mm + "/" + yyyy;
-  return { day: dd, month: mm, year: yyyy, time };
+
+  return { minute, hour, day, month, year, time };
 };
 
 export const NewDiary = () => {
@@ -63,12 +65,14 @@ export const NewDiary = () => {
   };
 
   const submitDiary = async (author) => {
-    const { day, month, year, time } = getCurrentDate();
+    const { minute, hour, day, month, year, time } = getCurrentDate();
     setSubmitted(true);
     setWarningMessage("正在保存...");
     try {
       let result = await db.put({
         content: newDiaryContent,
+        minute,
+        hour,
         day,
         month,
         year,

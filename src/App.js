@@ -18,7 +18,7 @@ const theme = createTheme({
       main: blue[400],
     },
     text: {
-      primary: common.white,
+      primary: pink[400],
     },
   },
 });
