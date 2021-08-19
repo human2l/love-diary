@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { createTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
-import { blue, common, pink } from "@material-ui/core/colors";
+import { blue, pink } from "@material-ui/core/colors";
 import { Navbar } from "./components/Navbar";
 import { NewDiary } from "./pages/NewDiary";
 import { Diarys } from "./pages/Diarys";
