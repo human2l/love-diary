@@ -2,7 +2,7 @@ import Typography from "@material-ui/core/Typography";
 import { styled } from "@material-ui/core/styles";
 import loveImage from "../assets/love_icon.png";
 
-function howLong(time1, time2) {
+const howLong = (time1, time2) => {
   time1 = time1.getTime();
   time2 = time2.getTime();
   let cha = time1 > time2 ? time1 - time2 : time2 - time1;
@@ -20,7 +20,7 @@ function howLong(time1, time2) {
     minutes: minutes,
     seconds: seconds,
   };
-}
+};
 
 const DashboardContainer = styled("div")({
   height: "100vh",
