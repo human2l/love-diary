@@ -1,8 +1,6 @@
-import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import { styled } from "@material-ui/core/styles";
 import loveImage from "../assets/love_icon.png";
-import { red } from "@material-ui/core/colors";
 
 function howLong(time1, time2) {
   time1 = time1.getTime();
