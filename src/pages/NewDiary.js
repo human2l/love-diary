@@ -1,7 +1,12 @@
+import { Deta } from "deta";
 import { useState } from "react";
 import { styled } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
+import Typography from "@material-ui/core/Typography";
+
+const deta = Deta("c08ztmvr_VzzQTNHLfBGn1r7UYAnYTP4Nd1pCwKXv");
+const db = deta.Base("diarys");
 
 const NewDiaryContainer = styled("div")({
   height: "calc(100vh - 56px)",
@@ -14,6 +19,7 @@ const DiaryTextField = styled(TextField)({
 });
 
 const ButtonContainer = styled("div")({
+  left: 0,
   width: "100%",
   display: "flex",
   justifyContent: "center",
@@ -22,16 +28,37 @@ const ButtonContainer = styled("div")({
   bottom: 60,
 });
 
-export const NewDiary = (props) => {
+const WarningMessageContainer = styled("div")({
+  marginTop: 10,
+  display: "flex",
+  justifyContent: "center",
+});
+
+const WarningMessage = styled(Typography)({
+  variant: "h3",
+  color: "#ec407a",
+});
+
+export const NewDiary = () => {
   const [newDiaryContent, setNewDiaryContent] = useState("");
+  const [submitted, setSubmitted] = useState(false);
+  const [warningMessage, setWarningMessage] = useState("");
 
   const handleChange = (event) => {
     setNewDiaryContent(event.target.value);
   };
 
-  const submitDiary = () => {
-    props.addNewDiary(newDiaryContent);
-    setNewDiaryContent("");
+  const submitDiary = async () => {
+    setSubmitted(true);
+    setWarningMessage("正在保存...");
+    try {
+      let result = await db.put({
+        content: newDiaryContent,
+      });
+      setWarningMessage("已保存");
+    } catch (error) {
+      setWarningMessage("保存失败，原因：" + error);
+    }
   };
   return (
     <NewDiaryContainer>
@@ -42,13 +69,24 @@ export const NewDiary = (props) => {
           placeholder="写点什么好呢"
           multiline
           variant="filled"
-          rows={(window.innerHeight - 56) / 23}
+          maxRows={(window.innerHeight - 56) / 23}
+          value={newDiaryContent}
         />
-        <ButtonContainer>
-          <Button variant="contained" color="primary" onClick={submitDiary}>
-            写好了
-          </Button>
-        </ButtonContainer>
+        <WarningMessageContainer>
+          <WarningMessage>{warningMessage}</WarningMessage>
+        </WarningMessageContainer>
+        {!submitted && (
+          <ButtonContainer>
+            <Button
+              size="large"
+              variant="contained"
+              color="primary"
+              onClick={submitDiary}
+            >
+              写好了
+            </Button>
+          </ButtonContainer>
+        )}
       </NewDiaryForm>
     </NewDiaryContainer>
   );
