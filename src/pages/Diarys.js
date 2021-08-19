@@ -1,78 +1,49 @@
+import { useState, useEffect } from "react";
 import { Diary } from "../components/Diary";
+import { Deta } from "deta";
+import { styled } from "@material-ui/core/styles";
+
+const DiarysContainer = styled("div")({
+  paddingBottom: 65,
+});
+
+const deta = Deta("c08ztmvr_VzzQTNHLfBGn1r7UYAnYTP4Nd1pCwKXv");
+const db = deta.Base("diarys");
 
 export const Diarys = () => {
+  const [diarys, setDiarys] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  useEffect(() => {
+    setIsLoading(true);
+    const fetchAllDiarys = async () => {
+      try {
+        const { items: allDiarys } = await db.fetch();
+        const orderedDiarys = allDiarys.sort((diaryA, diaryB) =>
+          diaryA.time < diaryB.time ? 1 : -1
+        );
+        setDiarys(orderedDiarys);
+        setIsLoading(false);
+      } catch (error) {
+        console.log(error);
+        setIsLoading(false);
+      }
+    };
+    fetchAllDiarys();
+  }, []);
   return (
-    <div>
-      <Diary
-        diaryAuthor="蛋蛋"
-        diaryDate="01/01/2021"
-        diaryContent="Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum ad aliquid temporibus aperiam, magnam quisquam consectetur reprehenderit tempora cumque, quos laboriosam soluta unde modi voluptatum maxime animi cum perferendis error nihil voluptas doloremque! Rem debitis a assumenda. Repellendus vel ipsum rerum temporibus blanditiis quisquam necessitatibus aliquam fugit odit in ab molestiae nulla maxime pariatur accusantium accusamus officiis impedit culpa, soluta explicabo. Nemo reiciendis at earum amet velit porro ut! Quo incidunt id beatae fugiat sequi, commodi error, doloremque culpa debitis, dolore tenetur ad aliquid neque corporis. Quas natus, ullam est sunt dolor corrupti provident earum vel expedita consequuntur delectus reiciendis?"
-      />
-      <Diary
-        diaryAuthor="蛋蛋"
-        diaryDate="01/01/2021"
-        diaryContent="Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum ad aliquid temporibus aperiam, magnam quisquam consectetur reprehenderit tempora cumque, quos laboriosam soluta unde modi voluptatum maxime animi cum perferendis error nihil voluptas doloremque! Rem debitis a assumenda. Repellendus vel ipsum rerum temporibus blanditiis quisquam necessitatibus aliquam fugit odit in ab molestiae nulla maxime pariatur accusantium accusamus officiis impedit culpa, soluta explicabo. Nemo reiciendis at earum amet velit porro ut! Quo incidunt id beatae fugiat sequi, commodi error, doloremque culpa debitis, dolore tenetur ad aliquid neque corporis. Quas natus, ullam est sunt dolor corrupti provident earum vel expedita consequuntur delectus reiciendis?"
-      />
-      <Diary
-        diaryAuthor="蛋蛋"
-        diaryDate="01/01/2021"
-        diaryContent="Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum ad aliquid temporibus aperiam, magnam quisquam consectetur reprehenderit tempora cumque, quos laboriosam soluta unde modi voluptatum maxime animi cum perferendis error nihil voluptas doloremque! Rem debitis a assumenda. Repellendus vel ipsum rerum temporibus blanditiis quisquam necessitatibus aliquam fugit odit in ab molestiae nulla maxime pariatur accusantium accusamus officiis impedit culpa, soluta explicabo. Nemo reiciendis at earum amet velit porro ut! Quo incidunt id beatae fugiat sequi, commodi error, doloremque culpa debitis, dolore tenetur ad aliquid neque corporis. Quas natus, ullam est sunt dolor corrupti provident earum vel expedita consequuntur delectus reiciendis?"
-      />
-      <Diary
-        diaryAuthor="蛋蛋"
-        diaryDate="01/01/2021"
-        diaryContent="Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum ad aliquid temporibus aperiam, magnam quisquam consectetur reprehenderit tempora cumque, quos laboriosam soluta unde modi voluptatum maxime animi cum perferendis error nihil voluptas doloremque! Rem debitis a assumenda. Repellendus vel ipsum rerum temporibus blanditiis quisquam necessitatibus aliquam fugit odit in ab molestiae nulla maxime pariatur accusantium accusamus officiis impedit culpa, soluta explicabo. Nemo reiciendis at earum amet velit porro ut! Quo incidunt id beatae fugiat sequi, commodi error, doloremque culpa debitis, dolore tenetur ad aliquid neque corporis. Quas natus, ullam est sunt dolor corrupti provident earum vel expedita consequuntur delectus reiciendis?"
-      />
-      <Diary
-        diaryAuthor="蛋蛋"
-        diaryDate="01/01/2021"
-        diaryContent="Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum ad aliquid temporibus aperiam, magnam quisquam consectetur reprehenderit tempora cumque, quos laboriosam soluta unde modi voluptatum maxime animi cum perferendis error nihil voluptas doloremque! Rem debitis a assumenda. Repellendus vel ipsum rerum temporibus blanditiis quisquam necessitatibus aliquam fugit odit in ab molestiae nulla maxime pariatur accusantium accusamus officiis impedit culpa, soluta explicabo. Nemo reiciendis at earum amet velit porro ut! Quo incidunt id beatae fugiat sequi, commodi error, doloremque culpa debitis, dolore tenetur ad aliquid neque corporis. Quas natus, ullam est sunt dolor corrupti provident earum vel expedita consequuntur delectus reiciendis?"
-      />
-      <Diary
-        diaryAuthor="蛋蛋"
-        diaryDate="01/01/2021"
-        diaryContent="Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum ad aliquid temporibus aperiam, magnam quisquam consectetur reprehenderit tempora cumque, quos laboriosam soluta unde modi voluptatum maxime animi cum perferendis error nihil voluptas doloremque! Rem debitis a assumenda. Repellendus vel ipsum rerum temporibus blanditiis quisquam necessitatibus aliquam fugit odit in ab molestiae nulla maxime pariatur accusantium accusamus officiis impedit culpa, soluta explicabo. Nemo reiciendis at earum amet velit porro ut! Quo incidunt id beatae fugiat sequi, commodi error, doloremque culpa debitis, dolore tenetur ad aliquid neque corporis. Quas natus, ullam est sunt dolor corrupti provident earum vel expedita consequuntur delectus reiciendis?"
-      />
-      <Diary
-        diaryAuthor="蛋蛋"
-        diaryDate="01/01/2021"
-        diaryContent="Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum ad aliquid temporibus aperiam, magnam quisquam consectetur reprehenderit tempora cumque, quos laboriosam soluta unde modi voluptatum maxime animi cum perferendis error nihil voluptas doloremque! Rem debitis a assumenda. Repellendus vel ipsum rerum temporibus blanditiis quisquam necessitatibus aliquam fugit odit in ab molestiae nulla maxime pariatur accusantium accusamus officiis impedit culpa, soluta explicabo. Nemo reiciendis at earum amet velit porro ut! Quo incidunt id beatae fugiat sequi, commodi error, doloremque culpa debitis, dolore tenetur ad aliquid neque corporis. Quas natus, ullam est sunt dolor corrupti provident earum vel expedita consequuntur delectus reiciendis?"
-      />
-      <Diary
-        diaryAuthor="蛋蛋"
-        diaryDate="01/01/2021"
-        diaryContent="Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum ad aliquid temporibus aperiam, magnam quisquam consectetur reprehenderit tempora cumque, quos laboriosam soluta unde modi voluptatum maxime animi cum perferendis error nihil voluptas doloremque! Rem debitis a assumenda. Repellendus vel ipsum rerum temporibus blanditiis quisquam necessitatibus aliquam fugit odit in ab molestiae nulla maxime pariatur accusantium accusamus officiis impedit culpa, soluta explicabo. Nemo reiciendis at earum amet velit porro ut! Quo incidunt id beatae fugiat sequi, commodi error, doloremque culpa debitis, dolore tenetur ad aliquid neque corporis. Quas natus, ullam est sunt dolor corrupti provident earum vel expedita consequuntur delectus reiciendis?"
-      />
-      <Diary
-        diaryAuthor="蛋蛋"
-        diaryDate="01/01/2021"
-        diaryContent="Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum ad aliquid temporibus aperiam, magnam quisquam consectetur reprehenderit tempora cumque, quos laboriosam soluta unde modi voluptatum maxime animi cum perferendis error nihil voluptas doloremque! Rem debitis a assumenda. Repellendus vel ipsum rerum temporibus blanditiis quisquam necessitatibus aliquam fugit odit in ab molestiae nulla maxime pariatur accusantium accusamus officiis impedit culpa, soluta explicabo. Nemo reiciendis at earum amet velit porro ut! Quo incidunt id beatae fugiat sequi, commodi error, doloremque culpa debitis, dolore tenetur ad aliquid neque corporis. Quas natus, ullam est sunt dolor corrupti provident earum vel expedita consequuntur delectus reiciendis?"
-      />
-      <Diary
-        diaryAuthor="蛋蛋"
-        diaryDate="01/01/2021"
-        diaryContent="Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum ad aliquid temporibus aperiam, magnam quisquam consectetur reprehenderit tempora cumque, quos laboriosam soluta unde modi voluptatum maxime animi cum perferendis error nihil voluptas doloremque! Rem debitis a assumenda. Repellendus vel ipsum rerum temporibus blanditiis quisquam necessitatibus aliquam fugit odit in ab molestiae nulla maxime pariatur accusantium accusamus officiis impedit culpa, soluta explicabo. Nemo reiciendis at earum amet velit porro ut! Quo incidunt id beatae fugiat sequi, commodi error, doloremque culpa debitis, dolore tenetur ad aliquid neque corporis. Quas natus, ullam est sunt dolor corrupti provident earum vel expedita consequuntur delectus reiciendis?"
-      />
-      <Diary
-        diaryAuthor="蛋蛋"
-        diaryDate="01/01/2021"
-        diaryContent="Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum ad aliquid temporibus aperiam, magnam quisquam consectetur reprehenderit tempora cumque, quos laboriosam soluta unde modi voluptatum maxime animi cum perferendis error nihil voluptas doloremque! Rem debitis a assumenda. Repellendus vel ipsum rerum temporibus blanditiis quisquam necessitatibus aliquam fugit odit in ab molestiae nulla maxime pariatur accusantium accusamus officiis impedit culpa, soluta explicabo. Nemo reiciendis at earum amet velit porro ut! Quo incidunt id beatae fugiat sequi, commodi error, doloremque culpa debitis, dolore tenetur ad aliquid neque corporis. Quas natus, ullam est sunt dolor corrupti provident earum vel expedita consequuntur delectus reiciendis?"
-      />
-      <Diary
-        diaryAuthor="蛋蛋"
-        diaryDate="01/01/2021"
-        diaryContent="Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum ad aliquid temporibus aperiam, magnam quisquam consectetur reprehenderit tempora cumque, quos laboriosam soluta unde modi voluptatum maxime animi cum perferendis error nihil voluptas doloremque! Rem debitis a assumenda. Repellendus vel ipsum rerum temporibus blanditiis quisquam necessitatibus aliquam fugit odit in ab molestiae nulla maxime pariatur accusantium accusamus officiis impedit culpa, soluta explicabo. Nemo reiciendis at earum amet velit porro ut! Quo incidunt id beatae fugiat sequi, commodi error, doloremque culpa debitis, dolore tenetur ad aliquid neque corporis. Quas natus, ullam est sunt dolor corrupti provident earum vel expedita consequuntur delectus reiciendis?"
-      />
-      <Diary
-        diaryAuthor="蛋蛋"
-        diaryDate="01/01/2021"
-        diaryContent="Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum ad aliquid temporibus aperiam, magnam quisquam consectetur reprehenderit tempora cumque, quos laboriosam soluta unde modi voluptatum maxime animi cum perferendis error nihil voluptas doloremque! Rem debitis a assumenda. Repellendus vel ipsum rerum temporibus blanditiis quisquam necessitatibus aliquam fugit odit in ab molestiae nulla maxime pariatur accusantium accusamus officiis impedit culpa, soluta explicabo. Nemo reiciendis at earum amet velit porro ut! Quo incidunt id beatae fugiat sequi, commodi error, doloremque culpa debitis, dolore tenetur ad aliquid neque corporis. Quas natus, ullam est sunt dolor corrupti provident earum vel expedita consequuntur delectus reiciendis?"
-      />
-      <Diary
-        diaryAuthor="蛋蛋"
-        diaryDate="01/01/2021"
-        diaryContent="Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum ad aliquid temporibus aperiam, magnam quisquam consectetur reprehenderit tempora cumque, quos laboriosam soluta unde modi voluptatum maxime animi cum perferendis error nihil voluptas doloremque! Rem debitis a assumenda. Repellendus vel ipsum rerum temporibus blanditiis quisquam necessitatibus aliquam fugit odit in ab molestiae nulla maxime pariatur accusantium accusamus officiis impedit culpa, soluta explicabo. Nemo reiciendis at earum amet velit porro ut! Quo incidunt id beatae fugiat sequi, commodi error, doloremque culpa debitis, dolore tenetur ad aliquid neque corporis. Quas natus, ullam est sunt dolor corrupti provident earum vel expedita consequuntur delectus reiciendis?"
-      />
-    </div>
+    <DiarysContainer>
+      {isLoading && <div>正在加载...</div>}
+      {diarys.map((diary) => {
+        const diaryDate = `${diary.day}/${diary.month}/${diary.year}`;
+        return (
+          <Diary
+            key={diary.key}
+            diaryAuthor="蛋蛋："
+            diaryDate={diaryDate}
+            diaryContent={diary.content}
+          />
+        );
+      })}
+    </DiarysContainer>
   );
 };

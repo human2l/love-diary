@@ -9,7 +9,7 @@ const deta = Deta("c08ztmvr_VzzQTNHLfBGn1r7UYAnYTP4Nd1pCwKXv");
 const db = deta.Base("diarys");
 
 const NewDiaryContainer = styled("div")({
-  height: "calc(100vh - 56px)",
+  paddingBottom: 65,
 });
 
 const NewDiaryForm = styled("form")({});
@@ -39,6 +39,16 @@ const WarningMessage = styled(Typography)({
   color: "#ec407a",
 });
 
+const getCurrentDate = () => {
+  let today = new Date();
+  let dd = String(today.getDate()).padStart(2, "0");
+  let mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
+  let yyyy = today.getFullYear();
+  let time = today.getTime();
+  today = dd + "/" + mm + "/" + yyyy;
+  return { day: dd, month: mm, year: yyyy, time };
+};
+
 export const NewDiary = () => {
   const [newDiaryContent, setNewDiaryContent] = useState("");
   const [submitted, setSubmitted] = useState(false);
@@ -49,11 +59,16 @@ export const NewDiary = () => {
   };
 
   const submitDiary = async () => {
+    const { day, month, year, time } = getCurrentDate();
     setSubmitted(true);
     setWarningMessage("正在保存...");
     try {
       let result = await db.put({
         content: newDiaryContent,
+        day,
+        month,
+        year,
+        time,
       });
       console.log(result);
       setWarningMessage("已保存");

@@ -18,7 +18,7 @@ export const Navbar = (props) => {
     height: "56px",
   });
 
-  const [value, setValue] = useState(2);
+  const [value, setValue] = useState(-1);
   return (
     <Navbar
       value={value}
