@@ -3,6 +3,8 @@ import { useState } from "react";
 import { styled } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
+import Modal from "@material-ui/core/Modal";
+import Typography from "@material-ui/core/Typography";
 
 const deta = Deta("c08ztmvr_VzzQTNHLfBGn1r7UYAnYTP4Nd1pCwKXv");
 const db = deta.Base("diarys");
@@ -39,6 +41,17 @@ const ControlContainer = styled("div")({
 //   color: "#ec407a",
 // });
 
+const SubmissionAlertModalContent = styled("div")({
+  padding: 20,
+  marginTop: 50,
+  width: "70%",
+  margin: "auto",
+  background: "rgba(255,255,255,0.6)",
+  // backdropFilter: "blur(10px)",
+  borderRadius: "10px",
+  border: "1px solid rgba(255,255,255,0.2)",
+});
+
 const getCurrentDate = () => {
   let today = new Date();
   let minute = String(today.getMinutes()).padStart(2, "0");
@@ -58,13 +71,23 @@ export const NewDiary = () => {
   const [newDiaryContent, setNewDiaryContent] = useState(defaultDiaryContent);
   const [submitted, setSubmitted] = useState(false);
   const [warningMessage, setWarningMessage] = useState("");
+  const [submissionAlertState, setSubmissionAlertState] = useState(false);
+  const [author, setAuthor] = useState("");
 
   const handleChange = (event) => {
     localStorage.setItem("diaryDraft", event.target.value);
     setNewDiaryContent(event.target.value);
   };
 
-  const submitDiary = async (author) => {
+  const showSubmissionAlert = () => {
+    setSubmissionAlertState(true);
+  };
+
+  const hideSubmissionAlert = () => {
+    setSubmissionAlertState(false);
+  };
+
+  const submitDiary = async () => {
     const { minute, hour, day, month, year, time } = getCurrentDate();
     setSubmitted(true);
     setWarningMessage("正在保存...");
@@ -108,7 +131,11 @@ export const NewDiary = () => {
               size="large"
               variant="contained"
               color="primary"
-              onClick={() => submitDiary("Dan")}
+              // onClick={() => submitDiary("Dan")}
+              onClick={() => {
+                setAuthor("Dan");
+                showSubmissionAlert();
+              }}
             >
               蛋蛋写好了
             </Button>
@@ -116,13 +143,63 @@ export const NewDiary = () => {
               size="large"
               variant="contained"
               color="secondary"
-              onClick={() => submitDiary("Kai")}
+              // onClick={() => submitDiary("Kai")}
+              onClick={() => {
+                setAuthor("Kai");
+                showSubmissionAlert();
+              }}
             >
               凯凯写好了
             </Button>
           </ControlContainer>
         )}
       </NewDiaryForm>
+      <Modal
+        open={submissionAlertState}
+        onClose={hideSubmissionAlert}
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+      >
+        <SubmissionAlertModalContent>
+          <Typography
+            color={author === "Dan" ? "textPrimary" : "secondary"}
+            variant="h5"
+            id="simple-modal-title"
+          >
+            {author === "Dan" ? "蛋蛋" : "凯凯"}，
+          </Typography>
+          <Typography color="textSecondary" id="simple-modal-description">
+            你确定写好了吗？
+          </Typography>
+          <div
+            style={{
+              marginTop: "10px",
+              display: "flex",
+              justifyContent: "space-around",
+            }}
+          >
+            <Button
+              size="medium"
+              variant="contained"
+              color="textPrimary"
+              onClick={hideSubmissionAlert}
+            >
+              取消
+            </Button>
+            <Button
+              size="medium"
+              variant="contained"
+              color={author === "Dan" ? "primary" : "secondary"}
+              onClick={() => {
+                hideSubmissionAlert();
+                submitDiary();
+              }}
+            >
+              确定
+            </Button>
+          </div>
+        </SubmissionAlertModalContent>
+      </Modal>
     </NewDiaryContainer>
   );
 };
