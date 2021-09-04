@@ -181,7 +181,7 @@ export const NewDiary = () => {
             <Button
               size="medium"
               variant="contained"
-              color="textPrimary"
+              color="default"
               onClick={hideSubmissionAlert}
             >
               取消
