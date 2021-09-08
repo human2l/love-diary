@@ -102,7 +102,7 @@ export const NewDiary = () => {
         time,
         author,
       });
-      console.log(result);
+      // console.log(result);
       setWarningMessage("已保存");
       localStorage.removeItem("diaryDraft");
     } catch (error) {

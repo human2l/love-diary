@@ -54,16 +54,16 @@ const RedTypography = styled(Typography)({
 
 export const Dashboard = () => {
   let res = howLong(new Date(), new Date("2020-02-14 00:00:00"));
-  console.log(
-    res.day +
-      "天 " +
-      res.hours +
-      "小时 " +
-      res.minutes +
-      "分钟 " +
-      res.seconds +
-      "秒"
-  );
+  // console.log(
+  //   res.day +
+  //     "天 " +
+  //     res.hours +
+  //     "小时 " +
+  //     res.minutes +
+  //     "分钟 " +
+  //     res.seconds +
+  //     "秒"
+  // );
 
   return (
     <DashboardContainer>
