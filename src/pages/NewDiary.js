@@ -5,6 +5,7 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import Modal from "@material-ui/core/Modal";
 import Typography from "@material-ui/core/Typography";
+import { getCurrentDate } from "../utils/DateUtils";
 
 const deta = Deta("c08ztmvr_VzzQTNHLfBGn1r7UYAnYTP4Nd1pCwKXv");
 const db = deta.Base("diarys");
@@ -30,39 +31,15 @@ const ControlContainer = styled("div")({
   bottom: 60,
 });
 
-// const WarningMessageContainer = styled("div")({
-//   marginTop: 10,
-//   display: "flex",
-//   justifyContent: "center",
-// });
-
-// const WarningMessage = styled(Typography)({
-//   variant: "h3",
-//   color: "#ec407a",
-// });
-
 const SubmissionAlertModalContent = styled("div")({
   padding: 20,
   marginTop: 50,
   width: "70%",
   margin: "auto",
   background: "rgba(255,255,255,0.6)",
-  // backdropFilter: "blur(10px)",
   borderRadius: "10px",
   border: "1px solid rgba(255,255,255,0.2)",
 });
-
-const getCurrentDate = () => {
-  let today = new Date();
-  let minute = String(today.getMinutes()).padStart(2, "0");
-  let hour = String(today.getHours()).padStart(2, "0");
-  let day = String(today.getDate()).padStart(2, "0");
-  let month = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
-  let year = today.getFullYear();
-  let time = today.getTime();
-
-  return { minute, hour, day, month, year, time };
-};
 
 export const NewDiary = () => {
   let defaultDiaryContent = localStorage.getItem("diaryDraft");
@@ -101,6 +78,7 @@ export const NewDiary = () => {
         year,
         time,
         author,
+        reply: [],
       });
 
       setWarningMessage("已保存");
@@ -122,9 +100,6 @@ export const NewDiary = () => {
           value={newDiaryContent}
           helperText={warningMessage}
         />
-        {/* <WarningMessageContainer>
-          <WarningMessage>{warningMessage}</WarningMessage>
-        </WarningMessageContainer> */}
         {!submitted && (
           <ControlContainer>
             <Button
