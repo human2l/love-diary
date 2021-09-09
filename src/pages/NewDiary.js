@@ -92,7 +92,7 @@ export const NewDiary = () => {
     setSubmitted(true);
     setWarningMessage("正在保存...");
     try {
-      let result = await db.put({
+      await db.put({
         content: newDiaryContent,
         minute,
         hour,
@@ -102,7 +102,7 @@ export const NewDiary = () => {
         time,
         author,
       });
-      console.log(result);
+
       setWarningMessage("已保存");
       localStorage.removeItem("diaryDraft");
     } catch (error) {
