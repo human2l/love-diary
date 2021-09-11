@@ -63,27 +63,28 @@ export const Diary = (props) => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    if (diaryPhotos.length > 0) {
-      setIsLoading(true);
-      const fetchPhotos = async () => {
-        try {
-          const photoBlobData = await diaryPhotosDB.get(diaryPhotos[0]);
-          let reader = new FileReader();
-          reader.readAsDataURL(photoBlobData);
-          reader.onload = () => {
-            setPhoto(reader.result);
-          };
-          setIsLoading(false);
-        } catch (error) {
-          console.error(error);
-        }
-      };
-      fetchPhotos();
+    if (diaryPhotos.length <= 0) return;
+    setIsLoading(true);
+    if (localStorage[diaryPhotos[0]]) {
+      setPhoto(localStorage[diaryPhotos[0]]);
+      setIsLoading(false);
+      return;
     }
-
-    // return () => {
-
-    // }
+    const fetchPhotos = async () => {
+      try {
+        const photoBlobData = await diaryPhotosDB.get(diaryPhotos[0]);
+        let reader = new FileReader();
+        reader.readAsDataURL(photoBlobData);
+        reader.onload = () => {
+          setPhoto(reader.result);
+          localStorage[diaryPhotos[0]] = reader.result;
+        };
+        setIsLoading(false);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchPhotos();
   }, [diaryPhotos]);
   // const theme = useTheme();
 
@@ -231,21 +232,22 @@ export const Diary = (props) => {
             {convertToParagraph(diaryContent)}
           </Typography>
           <PhotoContainer>
-            {isLoading && (
+            {isLoading ? (
               <CircularProgress color="secondary" style={{ margin: "auto" }} />
-            )}
-            {diaryPhotos.length > 0 && (
-              <div>
-                <Card>
-                  <CardActionArea>
-                    <CardMedia
-                      component="img"
-                      image={photo}
-                      style={{ height: "auto", width: "100%" }}
-                    />
-                  </CardActionArea>
-                </Card>
-              </div>
+            ) : (
+              diaryPhotos.length > 0 && (
+                <div>
+                  <Card>
+                    <CardActionArea>
+                      <CardMedia
+                        component="img"
+                        image={photo}
+                        style={{ height: "auto", width: "100%" }}
+                      />
+                    </CardActionArea>
+                  </Card>
+                </div>
+              )
             )}
           </PhotoContainer>
 
