@@ -34,17 +34,29 @@ export const Diarys = () => {
     <DiarysContainer>
       {isLoading && <div>正在加载...</div>}
       {diarys.map((diary) => {
-        const { author, minute, hour, day, month, year } = diary;
+        const {
+          key,
+          author,
+          content,
+          minute,
+          hour,
+          day,
+          month,
+          year,
+          reply,
+          photos,
+        } = diary;
         const diaryDate = getTimeString(author, minute, hour, day, month, year);
 
         return (
           <Diary
-            key={diary.key}
-            diaryKey={diary.key}
-            diaryAuthor={diary.author}
+            key={key}
+            diaryKey={key}
+            diaryAuthor={author}
             diaryDate={diaryDate}
-            diaryContent={diary.content}
-            diaryReplys={diary.reply}
+            diaryContent={content}
+            diaryReplys={reply}
+            diaryPhotos={photos}
             fetchAllDiarys={fetchAllDiarys}
           />
         );

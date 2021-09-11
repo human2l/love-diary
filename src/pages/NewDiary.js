@@ -9,9 +9,11 @@ import { getCurrentDate } from "../utils/DateUtils";
 import Card from "@material-ui/core/Card";
 import CardMedia from "@material-ui/core/CardMedia";
 import CardActionArea from "@material-ui/core/CardActionArea";
+import { getFileExtensionName } from "../utils/fileUtils";
 
 const deta = Deta("c08ztmvr_VzzQTNHLfBGn1r7UYAnYTP4Nd1pCwKXv");
 const db = deta.Base("diarys");
+const diaryPhotosDB = deta.Drive("diary_photos");
 
 const NewDiaryContainer = styled("div")({
   paddingTop: 20,
@@ -62,6 +64,8 @@ export const NewDiary = () => {
   const [author, setAuthor] = useState("");
   const [imageData, setImageData] = useState({
     file: null,
+    contentType: "",
+    fileBinary: "",
     imagePreviewUrl: "",
   });
 
@@ -82,21 +86,104 @@ export const NewDiary = () => {
     e.preventDefault();
     let reader = new FileReader();
     let file = e.target.files[0];
-    reader.onloadend = () => {
-      setImageData({ file, imagePreviewUrl: reader.result });
-    };
+    if (file === undefined) return;
+    const fileExtensionName = getFileExtensionName(file.name);
+    let contentType = "";
+    switch (fileExtensionName) {
+      case "jpeg":
+      case "jpg":
+        contentType = "image/jpeg";
+        break;
+      case "png":
+        contentType = "image/png";
+        break;
+      default:
+        return;
+    }
+    // reader.readAsBinaryString(file);
     reader.readAsDataURL(file);
+
+    reader.onloadend = (event) => {
+      var image = new Image();
+
+      image.onload = function () {
+        var canvas = document.createElement("canvas");
+        var context = canvas.getContext("2d");
+        canvas.width = image.width / 2;
+        canvas.height = image.height / 2;
+        context.drawImage(
+          image,
+          0,
+          0,
+          image.width,
+          image.height,
+          0,
+          0,
+          canvas.width,
+          canvas.height
+        );
+        const canvasDataURL = canvas.toDataURL();
+        setImageData({
+          file,
+          contentType,
+          //delete "data:" + contentType + ";base64," then atob
+          fileBinary: atob(canvasDataURL.split(",")[1]),
+          imagePreviewUrl: canvasDataURL,
+        });
+      };
+      image.src = event.target.result;
+    };
+    // reader.onloadend = () => {
+    //   setImageData({
+    //     ...imageData,
+    //     file,
+    //     contentType,
+    //     fileBinary: reader.result,
+    //     imagePreviewUrl:
+    //       "data:" + contentType + ";base64," + btoa(reader.result),
+    //   });
+    // };
   };
 
   const clearImage = () => {
-    setImageData({});
+    setImageData({
+      file: null,
+      contentType: "",
+      fileBinary: "",
+      imagePreviewUrl: "",
+    });
   };
+
+  //for developing purpose
+  // const checkAllImage = async () => {
+  //   let result = await diaryPhotosDB.list();
+  //   let allFiles = result.names;
+  //   console.log(allFiles);
+  // };
+  // checkAllImage();
+
+  //for developing purpose
+  // const deleteImages = async (imageNames) => {
+  //   let result = await diaryPhotosDB.list();
+  //   let allFiles = result.names;
+  //   diaryPhotosDB.deleteMany(imageNames);
+  //   console.log(allFiles);
+  // };
+  // deleteImages(["1631363390250.jpeg"]);
 
   const submitDiary = async () => {
     const { minute, hour, day, month, year, time } = getCurrentDate();
     setSubmitted(true);
-    setWarningMessage("正在保存...");
+    setWarningMessage("正在保存...请不要乱动🐶");
     try {
+      let photos = [];
+      if (imageData.file !== null) {
+        photos.push(time + "." + getFileExtensionName(imageData.file.name));
+        await diaryPhotosDB.put(
+          time + "." + getFileExtensionName(imageData.file.name),
+          { data: imageData.fileBinary, contentType: imageData.contentType }
+        );
+      }
       await db.put({
         content: newDiaryContent,
         minute,
@@ -106,11 +193,13 @@ export const NewDiary = () => {
         year,
         time,
         author,
+        photos,
         reply: [],
       });
-
       setWarningMessage("已保存");
       localStorage.removeItem("diaryDraft");
+
+      clearImage();
     } catch (error) {
       setWarningMessage("保存失败，原因：" + error);
     }
@@ -154,7 +243,7 @@ export const NewDiary = () => {
           </Button>
         </ImageControlContainer>
 
-        {imageData.imagePreviewUrl && (
+        {imageData.file !== null && (
           <Card>
             <CardActionArea>
               <CardMedia component="img" image={imageData.imagePreviewUrl} />
