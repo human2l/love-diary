@@ -6,6 +6,9 @@ import Button from "@material-ui/core/Button";
 import Modal from "@material-ui/core/Modal";
 import Typography from "@material-ui/core/Typography";
 import { getCurrentDate } from "../utils/DateUtils";
+import Card from "@material-ui/core/Card";
+import CardMedia from "@material-ui/core/CardMedia";
+import CardActionArea from "@material-ui/core/CardActionArea";
 
 const deta = Deta("c08ztmvr_VzzQTNHLfBGn1r7UYAnYTP4Nd1pCwKXv");
 const db = deta.Base("diarys");
@@ -41,6 +44,13 @@ const SubmissionAlertModalContent = styled("div")({
   border: "1px solid rgba(255,255,255,0.2)",
 });
 
+const ImageControlContainer = styled("div")({
+  display: "flex",
+  justifyContent: "space-between",
+  paddingTop: "10px",
+  paddingBottom: "10px",
+});
+
 export const NewDiary = () => {
   let defaultDiaryContent = localStorage.getItem("diaryDraft");
   if (defaultDiaryContent === undefined || defaultDiaryContent === null)
@@ -50,6 +60,10 @@ export const NewDiary = () => {
   const [warningMessage, setWarningMessage] = useState("");
   const [submissionAlertState, setSubmissionAlertState] = useState(false);
   const [author, setAuthor] = useState("");
+  const [imageData, setImageData] = useState({
+    file: null,
+    imagePreviewUrl: "",
+  });
 
   const handleChange = (event) => {
     localStorage.setItem("diaryDraft", event.target.value);
@@ -62,6 +76,20 @@ export const NewDiary = () => {
 
   const hideSubmissionAlert = () => {
     setSubmissionAlertState(false);
+  };
+
+  const selectImageFile = (e) => {
+    e.preventDefault();
+    let reader = new FileReader();
+    let file = e.target.files[0];
+    reader.onloadend = () => {
+      setImageData({ file, imagePreviewUrl: reader.result });
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const clearImage = () => {
+    setImageData({});
   };
 
   const submitDiary = async () => {
@@ -100,13 +128,45 @@ export const NewDiary = () => {
           value={newDiaryContent}
           helperText={warningMessage}
         />
+        <ImageControlContainer>
+          <Button
+            component="label"
+            size="small"
+            variant="contained"
+            color="primary"
+          >
+            <input
+              hidden
+              type="file"
+              onChange={(e) => {
+                selectImageFile(e);
+              }}
+            />
+            添加图片
+          </Button>
+          <Button
+            size="small"
+            variant="outlined"
+            color="primary"
+            onClick={clearImage}
+          >
+            清除图片
+          </Button>
+        </ImageControlContainer>
+
+        {imageData.imagePreviewUrl && (
+          <Card>
+            <CardActionArea>
+              <CardMedia component="img" image={imageData.imagePreviewUrl} />
+            </CardActionArea>
+          </Card>
+        )}
         {!submitted && (
           <ControlContainer>
             <Button
               size="large"
               variant="contained"
               color="primary"
-              // onClick={() => submitDiary("Dan")}
               onClick={() => {
                 setAuthor("Dan");
                 showSubmissionAlert();
@@ -118,7 +178,6 @@ export const NewDiary = () => {
               size="large"
               variant="contained"
               color="secondary"
-              // onClick={() => submitDiary("Kai")}
               onClick={() => {
                 setAuthor("Kai");
                 showSubmissionAlert();
