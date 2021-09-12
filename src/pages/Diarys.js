@@ -3,8 +3,12 @@ import { Diary } from "../components/Diary";
 import { Deta } from "deta";
 import { styled } from "@material-ui/core/styles";
 import { getTimeString } from "../utils/DateUtils";
+import CircularProgress from "@material-ui/core/CircularProgress";
+
 const DiarysContainer = styled("div")({
   paddingBottom: 65,
+  display: "flex",
+  flexDirection: "column",
 });
 
 const deta = Deta("c08ztmvr_VzzQTNHLfBGn1r7UYAnYTP4Nd1pCwKXv");
@@ -32,7 +36,9 @@ export const Diarys = () => {
   }, []);
   return (
     <DiarysContainer>
-      {isLoading && <div>正在加载...</div>}
+      {isLoading && (
+        <CircularProgress color="secondary" style={{ margin: "auto" }} />
+      )}
       {diarys.map((diary) => {
         const {
           key,
