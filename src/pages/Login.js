@@ -38,7 +38,7 @@ export const Login = (props) => {
 
   return (
     <LoginContainer>
-      <LoginLabel variant="h5">宝贝输一下密码哈</LoginLabel>
+      <LoginLabel variant="h4">不输密码不让看🤪</LoginLabel>
       <PasswordPad>
         <Grid
           container
