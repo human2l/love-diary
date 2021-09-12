@@ -100,48 +100,50 @@ export const NewDiary = () => {
       default:
         return;
     }
-    // reader.readAsBinaryString(file);
-    reader.readAsDataURL(file);
 
-    reader.onloadend = (event) => {
-      var image = new Image();
-
-      image.onload = function () {
-        var canvas = document.createElement("canvas");
-        var context = canvas.getContext("2d");
-        canvas.width = image.width / 2;
-        canvas.height = image.height / 2;
-        context.drawImage(
-          image,
-          0,
-          0,
-          image.width,
-          image.height,
-          0,
-          0,
-          canvas.width,
-          canvas.height
-        );
-        const canvasDataURL = canvas.toDataURL();
-        setImageData({
-          file,
-          contentType,
-          //delete "data:" + contentType + ";base64," then atob
-          fileBinary: atob(canvasDataURL.split(",")[1]),
-          imagePreviewUrl: canvasDataURL,
-        });
-      };
-      image.src = event.target.result;
+    reader.readAsBinaryString(file);
+    reader.onloadend = () => {
+      setImageData({
+        ...imageData,
+        file,
+        contentType,
+        fileBinary: reader.result,
+        imagePreviewUrl:
+          "data:" + contentType + ";base64," + btoa(reader.result),
+      });
     };
-    // reader.onloadend = () => {
-    //   setImageData({
-    //     ...imageData,
-    //     file,
-    //     contentType,
-    //     fileBinary: reader.result,
-    //     imagePreviewUrl:
-    //       "data:" + contentType + ";base64," + btoa(reader.result),
-    //   });
+
+    //alternative: code below to convert to small size image
+    // reader.readAsDataURL(file);
+    // reader.onloadend = (event) => {
+    //   var image = new Image();
+
+    //   image.onload = function () {
+    //     var canvas = document.createElement("canvas");
+    //     var context = canvas.getContext("2d");
+    //     canvas.width = image.width / 2;
+    //     canvas.height = image.height / 2;
+    //     context.drawImage(
+    //       image,
+    //       0,
+    //       0,
+    //       image.width,
+    //       image.height,
+    //       0,
+    //       0,
+    //       canvas.width,
+    //       canvas.height
+    //     );
+    //     const canvasDataURL = canvas.toDataURL();
+    //     setImageData({
+    //       file,
+    //       contentType,
+    //       //delete "data:" + contentType + ";base64," then atob
+    //       fileBinary: atob(canvasDataURL.split(",")[1]),
+    //       imagePreviewUrl: canvasDataURL,
+    //     });
+    //   };
+    //   image.src = event.target.result;
     // };
   };
 
