@@ -105,6 +105,7 @@ export const Diary = (props) => {
 
   const submitReply = async (author) => {
     setReply(false);
+    if (replyContent === "") return;
     const { minute, hour, day, month, year, time } = getCurrentDate();
     try {
       await db.update(
@@ -133,7 +134,6 @@ export const Diary = (props) => {
   };
 
   const toggleReplyPanel = () => {
-    // console.log(photo);
     setReply(!reply);
   };
 
