@@ -93,6 +93,8 @@ self.addEventListener("fetch", (e) => {
   let cacheMatchPromise = caches
     .match(e.request)
     .then(function (cache) {
+      console.log("cache:" + cache);
+
       // 如果有cache则直接返回，否则通过fetch请求
       return cache || fetch(e.request);
     })
