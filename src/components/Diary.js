@@ -65,11 +65,11 @@ export const Diary = (props) => {
   useEffect(() => {
     if (diaryPhotos.length <= 0) return;
     setIsLoading(true);
-    if (localStorage[diaryPhotos[0]]) {
-      setPhoto(localStorage[diaryPhotos[0]]);
-      setIsLoading(false);
-      return;
-    }
+    // if (localStorage[diaryPhotos[0]]) {
+    //   setPhoto(localStorage[diaryPhotos[0]]);
+    //   setIsLoading(false);
+    //   return;
+    // }
     const fetchPhotos = async () => {
       try {
         const photoBlobData = await diaryPhotosDB.get(diaryPhotos[0]);
@@ -77,7 +77,7 @@ export const Diary = (props) => {
         reader.readAsDataURL(photoBlobData);
         reader.onload = () => {
           setPhoto(reader.result);
-          localStorage[diaryPhotos[0]] = reader.result;
+          // localStorage[diaryPhotos[0]] = reader.result;
         };
         setIsLoading(false);
       } catch (error) {
