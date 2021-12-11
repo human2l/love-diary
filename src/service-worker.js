@@ -76,18 +76,29 @@ const cacheName = "v1";
 
 self.addEventListener("fetch", (e) => {
   console.log("Service Worker: Fetching");
-  e.respondWith(
-    fetch(e.request)
-      .then((res) => {
-        // Make copy/clone of response
-        const resClone = res.clone();
-        // Open cache
-        caches.open(cacheName).then((cache) => {
-          // Add response to cache
-          cache.put(e.request, resClone);
-        });
-        return res;
-      })
-      .catch((err) => caches.match(e.request).then((res) => res))
-  );
+  // e.respondWith(
+  //   fetch(e.request)
+  //     .then((res) => {
+  //       // Make copy/clone of response
+  //       const resClone = res.clone();
+  //       // Open cache
+  //       caches.open(cacheName).then((cache) => {
+  //         // Add response to cache
+  //         cache.put(e.request, resClone);
+  //       });
+  //       return res;
+  //     })
+  //     .catch((err) => caches.match(e.request).then((res) => res))
+  // );
+  let cacheMatchPromise = caches
+    .match(e.request)
+    .then(function (cache) {
+      // 如果有cache则直接返回，否则通过fetch请求
+      return cache || fetch(e.request);
+    })
+    .catch(function (err) {
+      console.log(err);
+      return fetch(e.request);
+    });
+  e.respondWith(cacheMatchPromise);
 });
