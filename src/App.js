@@ -40,7 +40,7 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <AppContainer>
-        <Router>
+        {/* <Router>
           <Switch>
             {authenticated && (
               <>
@@ -60,7 +60,7 @@ function App() {
             </Route>
           </Switch>
           {authenticated && <Navbar />}
-        </Router>
+        </Router> */}
       </AppContainer>
     </ThemeProvider>
   );
