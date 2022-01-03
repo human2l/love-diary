@@ -1,14 +1,14 @@
-// import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { createTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
 import { blue, pink, grey, green, yellow } from "@material-ui/core/colors";
-// import { Navbar } from "./components/Navbar";
-// import { NewDiary } from "./pages/NewDiary";
-// import { Diarys } from "./pages/Diarys";
-// import { Dashboard } from "./pages/Dashboard";
-// import { Login } from "./pages/Login";
+import { Navbar } from "./components/Navbar";
+import { NewDiary } from "./pages/NewDiary";
+import { Diarys } from "./pages/Diarys";
+import { Dashboard } from "./pages/Dashboard";
+import { Login } from "./pages/Login";
 import styled from "styled-components";
-// import { useState } from "react";
+import { useState } from "react";
 
 const theme = createTheme({
   palette: {
@@ -33,14 +33,14 @@ const AppContainer = styled("div")({
 });
 
 function App() {
-  // const [authenticated, setAuthenticated] = useState(false);
-  // const login = () => {
-  //   setAuthenticated(true);
-  // };
+  const [authenticated, setAuthenticated] = useState(false);
+  const login = () => {
+    setAuthenticated(true);
+  };
   return (
     <ThemeProvider theme={theme}>
       <AppContainer>
-        {/* <Router>
+        <Router>
           <Switch>
             {authenticated && (
               <>
@@ -60,7 +60,7 @@ function App() {
             </Route>
           </Switch>
           {authenticated && <Navbar />}
-        </Router> */}
+        </Router>
       </AppContainer>
     </ThemeProvider>
   );
