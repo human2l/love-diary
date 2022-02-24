@@ -6,6 +6,7 @@ import { Navbar } from "./components/Navbar";
 import { NewDiary } from "./pages/NewDiary";
 import { Diarys } from "./pages/Diarys";
 import { Dashboard } from "./pages/Dashboard";
+import { Wallet } from "./pages/Wallet";
 import { Login } from "./pages/Login";
 import styled from "styled-components";
 import { useState } from "react";
@@ -52,6 +53,9 @@ function App() {
                 </Route>
                 <Route path="/diarys">
                   <Diarys />
+                </Route>
+                <Route path="/wallet">
+                  <Wallet />
                 </Route>
               </>
             )}

@@ -5,6 +5,7 @@ import BottomNavigation from "@material-ui/core/BottomNavigation";
 import BottomNavigationAction from "@material-ui/core/BottomNavigationAction";
 import CreateIcon from "@material-ui/icons/Create";
 import AssignmentIcon from "@material-ui/icons/Assignment";
+import AccountBalanceWalletIcon from '@material-ui/icons/AccountBalanceWallet';
 import FavoriteIcon from "@material-ui/icons/Favorite";
 
 export const Navbar = (props) => {
@@ -32,6 +33,9 @@ export const Navbar = (props) => {
             history.push("/diarys");
             break;
           case 2:
+            history.push("/wallet");
+            break;
+          case 3:
             history.push("/");
             break;
           default:
@@ -42,6 +46,7 @@ export const Navbar = (props) => {
     >
       <BottomNavigationAction label="新的心情" icon={<CreateIcon />} />
       <BottomNavigationAction label="恋爱日记" icon={<AssignmentIcon />} />
+      <BottomNavigationAction label="钱包" icon={<AccountBalanceWalletIcon />} />
       <BottomNavigationAction label="我们" icon={<FavoriteIcon />} />
     </Navbar>
   );
