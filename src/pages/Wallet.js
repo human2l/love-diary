@@ -8,7 +8,7 @@ const db = deta.Base("wallet");
 
 
 const WalletContainer = styled("div")({
-  marginTop: "100px",
+  paddingTop: "100px",
   height: "100vh",
   paddingBottom: 65,
   display: "flex",
@@ -39,7 +39,7 @@ export const Wallet = () => {
   return (
     <WalletContainer>
       <ItemContainer>
-      <Typography color="Text" variant="h5">
+      <Typography color="initial" variant="h5">
         蛋蛋账户余额：
       </Typography>
       <Typography color="textPrimary" variant="h5">

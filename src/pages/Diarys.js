@@ -14,6 +14,20 @@ const DiarysContainer = styled("div")({
 const deta = Deta("c08ztmvr_VzzQTNHLfBGn1r7UYAnYTP4Nd1pCwKXv");
 const db = deta.Base("diarys");
 
+const setNumOfCachedPhotos = (diarys, n) => {
+  let cachePhotoCounter = 0;
+      const configuredDiarys = diarys.map((diary) => {
+        if(diary.photos.length === 0 || cachePhotoCounter >= n){
+          diary.cachePhoto = false
+        }else{
+          diary.cachePhoto = true;
+          cachePhotoCounter++;
+        }
+        return diary
+      })
+  return configuredDiarys;
+}
+
 export const Diarys = () => {
   const [diarys, setDiarys] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -24,7 +38,10 @@ export const Diarys = () => {
       const orderedDiarys = allDiarys.sort((diaryA, diaryB) =>
         diaryA.time < diaryB.time ? 1 : -1
       );
-      setDiarys(orderedDiarys);
+
+      const cachedPhotosDiarys = setNumOfCachedPhotos(orderedDiarys, 3);
+
+      setDiarys(cachedPhotosDiarys);
       setIsLoading(false);
     } catch (error) {
       console.error(error);
@@ -51,6 +68,7 @@ export const Diarys = () => {
           year,
           reply,
           photos,
+          cachePhoto,
         } = diary;
         const diaryDate = getTimeString(author, minute, hour, day, month, year);
 
@@ -63,6 +81,7 @@ export const Diarys = () => {
             diaryContent={content}
             diaryReplys={reply}
             diaryPhotos={photos}
+            cachePhoto = {cachePhoto}
             fetchAllDiarys={fetchAllDiarys}
           />
         );

@@ -54,6 +54,7 @@ export const Diary = (props) => {
     diaryKey,
     diaryReplys,
     diaryPhotos,
+    cachePhoto,
     fetchAllDiarys,
   } = props;
 
@@ -65,27 +66,32 @@ export const Diary = (props) => {
   useEffect(() => {
     if (diaryPhotos.length <= 0) return;
     setIsLoading(true);
-    // if (localStorage[diaryPhotos[0]]) {
-    //   setPhoto(localStorage[diaryPhotos[0]]);
-    //   setIsLoading(false);
-    //   return;
-    // }
     const fetchPhotos = async () => {
       try {
-        const photoBlobData = await diaryPhotosDB.get(diaryPhotos[0]);
-        let reader = new FileReader();
-        reader.readAsDataURL(photoBlobData);
-        reader.onload = () => {
-          setPhoto(reader.result);
-          // localStorage[diaryPhotos[0]] = reader.result;
-        };
+        const storedPhoto = localStorage.getItem(diaryPhotos[0])
+        //cache & stored => getStored, setPhoto
+        if(cachePhoto && storedPhoto){
+          setPhoto(storedPhoto)
+        }else{
+          //no cache & no stored => reader, setPhoto
+          const photoBlobData = await diaryPhotosDB.get(diaryPhotos[0]);
+          let reader = new FileReader();
+          reader.readAsDataURL(photoBlobData);
+          reader.onload = () => {
+            setPhoto(reader.result);
+            //cache & no stored => reader, setPhoto, setStored
+            cachePhoto && localStorage.setItem(diaryPhotos[0],reader.result) 
+          };
+          //no cache & stored => reader, setPhoto, removeStored
+          storedPhoto && localStorage.removeItem(diaryPhotos[0]) 
+        }
         setIsLoading(false);
       } catch (error) {
         console.error(error);
       }
     };
     fetchPhotos();
-  }, [diaryPhotos]);
+  }, [diaryPhotos, cachePhoto]);
   // const theme = useTheme();
 
   const convertToParagraph = (text) => {
