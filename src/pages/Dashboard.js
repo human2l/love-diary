@@ -43,13 +43,15 @@ const DaysCounterContainer = styled("div")({
   display: "flex",
   justifyContent: "center",
   alignItems: "flex-end",
+  marginBottom:20
 });
 
 const DiaryCounterContainer = styled("div")({
   display: "flex",
   flexDirection: "column",
   justifyContent: "center",
-  alignItems: "flex-end",
+  alignItems: "center",
+  textAlign:"center"
 });
 
 const Image = styled("img")({
@@ -125,19 +127,27 @@ export const Dashboard = () => {
         </Typography>
       </DaysCounterContainer>
       <DiaryCounterContainer>
-        <Typography color="textPrimary" variant="h5">
+        <Typography color="primary" variant="h5">
           蛋蛋一共写了{Math.floor(danDiaryCount/(danDiaryCount+kaiDiaryCount)*100)}%
           的日记
-          ，一共
+          
+        <Typography color="primary" variant="h5">
+          
+          一共
           {danDiaryCount}
           篇 
           </Typography>
-        <Typography color="textPrimary" variant="h5">
+          </Typography>
+        <Typography color="secondary" variant="h5">
           凯凯一共写了{Math.floor(kaiDiaryCount/(danDiaryCount+kaiDiaryCount)*100)}%
           的日记
-          ，一共
+          
+        <Typography color="secondary" variant="h5">
+          
+          一共
           {kaiDiaryCount}
           篇 
+        </Typography>
         </Typography>
       </DiaryCounterContainer>
     </DashboardContainer>
