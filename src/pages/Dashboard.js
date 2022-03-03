@@ -1,6 +1,11 @@
+import {Deta} from 'deta'
+import { useState, useEffect } from 'react';
 import Typography from "@material-ui/core/Typography";
 import { styled } from "@material-ui/core/styles";
 import loveImage from "../assets/love_icon.png";
+
+const deta = Deta("c08ztmvr_VzzQTNHLfBGn1r7UYAnYTP4Nd1pCwKXv");
+const db = deta.Base("diarys");
 
 const howLong = (time1, time2) => {
   time1 = time1.getTime();
@@ -34,8 +39,15 @@ const DashboardContainer = styled("div")({
   //   backgroundSize: "cover",
 });
 
-const CounterContainer = styled("div")({
+const DaysCounterContainer = styled("div")({
   display: "flex",
+  justifyContent: "center",
+  alignItems: "flex-end",
+});
+
+const DiaryCounterContainer = styled("div")({
+  display: "flex",
+  flexDirection: "column",
   justifyContent: "center",
   alignItems: "flex-end",
 });
@@ -52,7 +64,31 @@ const RedTypography = styled(Typography)({
   color: "#f44336",
 });
 
+const getDiaryCountByUser = async (user) => {
+  try {
+    const diarys = await db.fetch([
+      { "author": user }
+    ])
+    return diarys.count
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 export const Dashboard = () => {
+  const [kaiDiaryCount, setKaiDiaryCount] = useState(0)
+  const [danDiaryCount, setDanDiaryCount] = useState(0)
+  useEffect(() => {
+    const updateDiaryCount = async() => {
+      setKaiDiaryCount(await getDiaryCountByUser("Kai"))
+      setDanDiaryCount(await getDiaryCountByUser("Dan"))
+    }
+    updateDiaryCount();
+  }, [])
+  
+
+
+
   let res = howLong(new Date(), new Date("2020-02-14 00:00:00"));
   // console.log(
   //   res.day +
@@ -65,6 +101,9 @@ export const Dashboard = () => {
   //     "秒"
   // );
 
+
+  
+
   return (
     <DashboardContainer>
       <Image src={loveImage} />
@@ -74,7 +113,7 @@ export const Dashboard = () => {
       <Typography color="textPrimary" variant="h5">
         从2020年2月14日在一起
       </Typography>
-      <CounterContainer>
+      <DaysCounterContainer>
         <Typography color="textPrimary" variant="h5">
           已经
         </Typography>
@@ -84,7 +123,23 @@ export const Dashboard = () => {
         <Typography color="textPrimary" variant="h5">
           天了
         </Typography>
-      </CounterContainer>
+      </DaysCounterContainer>
+      <DiaryCounterContainer>
+        <Typography color="textPrimary" variant="h5">
+          蛋蛋一共写了{Math.floor(danDiaryCount/(danDiaryCount+kaiDiaryCount)*100)}%
+          的日记
+          ，一共
+          {danDiaryCount}
+          篇 
+          </Typography>
+        <Typography color="textPrimary" variant="h5">
+          凯凯一共写了{Math.floor(kaiDiaryCount/(danDiaryCount+kaiDiaryCount)*100)}%
+          的日记
+          ，一共
+          {kaiDiaryCount}
+          篇 
+        </Typography>
+      </DiaryCounterContainer>
     </DashboardContainer>
   );
 };
