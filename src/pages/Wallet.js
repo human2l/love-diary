@@ -2,6 +2,7 @@ import { Deta } from "deta";
 import { useState, useEffect } from 'react';
 import Typography from "@material-ui/core/Typography";
 import { styled } from "@material-ui/core/styles";
+import walletSVG from "../assets/wallet.svg";
 
 const deta = Deta("c08ztmvr_VzzQTNHLfBGn1r7UYAnYTP4Nd1pCwKXv");
 const db = deta.Base("wallet");
@@ -17,9 +18,11 @@ const WalletContainer = styled("div")({
 });
 
 const ItemContainer = styled("div")({
+  marginTop:20,
   display: "flex",
+  flexDirection: "column",
   justifyContent: "center",
-  alignItems: "flex-end",
+  alignItems: "center",
 });
 
 export const Wallet = () => {
@@ -38,15 +41,19 @@ export const Wallet = () => {
   
   return (
     <WalletContainer>
+      <img src={walletSVG} alt="wallet" height="50px" width="50px"/>
       <ItemContainer>
       <Typography color="initial" variant="h5">
-        蛋蛋账户余额：
+        蛋蛋账户余额
       </Typography>
       <Typography color="textPrimary" variant="h5">
-          {danMoney}
-        </Typography>
-        <Typography color="initial" variant="h5">
-        刀
+        $ {danMoney}
+      </Typography>
+      <Typography color="initial" variant="h5">
+        凯凯账户余额
+      </Typography>
+      <Typography color="secondary" variant="h5">
+        $ 99999
       </Typography>
       </ItemContainer>
     </WalletContainer>

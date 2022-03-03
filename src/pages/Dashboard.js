@@ -128,7 +128,7 @@ export const Dashboard = () => {
       </DaysCounterContainer>
       <DiaryCounterContainer>
         <Typography color="primary" variant="h5">
-          蛋蛋一共写了{Math.floor(danDiaryCount/(danDiaryCount+kaiDiaryCount)*100)}%
+          蛋蛋写了{Math.floor(danDiaryCount/(danDiaryCount+kaiDiaryCount)*100)}%
           的日记
           
         <Typography color="primary" variant="h5">
@@ -139,7 +139,7 @@ export const Dashboard = () => {
           </Typography>
           </Typography>
         <Typography color="secondary" variant="h5">
-          凯凯一共写了{Math.floor(kaiDiaryCount/(danDiaryCount+kaiDiaryCount)*100)}%
+          凯凯写了{Math.floor(kaiDiaryCount/(danDiaryCount+kaiDiaryCount)*100)}%
           的日记
           
         <Typography color="secondary" variant="h5">
