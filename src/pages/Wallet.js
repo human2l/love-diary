@@ -53,7 +53,7 @@ export const Wallet = () => {
         凯凯账户余额
       </Typography>
       <Typography color="secondary" variant="h5">
-        $ 99999
+        灰常多，老有钱了
       </Typography>
       </ItemContainer>
     </WalletContainer>
