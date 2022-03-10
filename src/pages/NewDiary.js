@@ -11,7 +11,7 @@ import CardMedia from "@material-ui/core/CardMedia";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import { getFileExtensionName } from "../utils/fileUtils";
 
-const deta = Deta("c08ztmvr_VzzQTNHLfBGn1r7UYAnYTP4Nd1pCwKXv");
+const deta = Deta("c08ztmvr_6jWPJ2XjugHwifu3WkYscye7GP4gCgom");
 const db = deta.Base("diarys");
 const diaryPhotosDB = deta.Drive("diary_photos");
 

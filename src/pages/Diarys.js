@@ -11,7 +11,7 @@ const DiarysContainer = styled("div")({
   flexDirection: "column",
 });
 
-const deta = Deta("c08ztmvr_VzzQTNHLfBGn1r7UYAnYTP4Nd1pCwKXv");
+const deta = Deta("c08ztmvr_6jWPJ2XjugHwifu3WkYscye7GP4gCgom");
 const db = deta.Base("diarys");
 
 const setNumOfCachedPhotos = (diarys, n) => {

@@ -4,7 +4,7 @@ import Typography from "@material-ui/core/Typography";
 import { styled } from "@material-ui/core/styles";
 import walletSVG from "../assets/wallet.svg";
 
-const deta = Deta("c08ztmvr_VzzQTNHLfBGn1r7UYAnYTP4Nd1pCwKXv");
+const deta = Deta("c08ztmvr_6jWPJ2XjugHwifu3WkYscye7GP4gCgom");
 const db = deta.Base("wallet");
 
 

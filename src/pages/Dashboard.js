@@ -4,7 +4,7 @@ import Typography from "@material-ui/core/Typography";
 import { styled } from "@material-ui/core/styles";
 import loveImage from "../assets/love_icon.png";
 
-const deta = Deta("c08ztmvr_VzzQTNHLfBGn1r7UYAnYTP4Nd1pCwKXv");
+const deta = Deta("c08ztmvr_6jWPJ2XjugHwifu3WkYscye7GP4gCgom");
 const db = deta.Base("diarys");
 
 const howLong = (time1, time2) => {

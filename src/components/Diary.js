@@ -17,7 +17,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import { useState, useEffect } from "react";
 import { getCurrentDate, getTimeString } from "../utils/DateUtils";
 
-const deta = Deta("c08ztmvr_VzzQTNHLfBGn1r7UYAnYTP4Nd1pCwKXv");
+const deta = Deta("c08ztmvr_6jWPJ2XjugHwifu3WkYscye7GP4gCgom");
 const db = deta.Base("diarys");
 const diaryPhotosDB = deta.Drive("diary_photos");
 
