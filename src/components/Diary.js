@@ -1,3 +1,5 @@
+import { Deta } from "deta";
+
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
@@ -14,10 +16,10 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 
 import { useState, useEffect } from "react";
 import { getCurrentDate, getTimeString } from "../utils/DateUtils";
-import { getDetaDB, getDetaDrive } from "../utils/deta";
 
-const db = getDetaDB("diarys");
-const diaryPhotosDB = getDetaDrive("diary_photos");
+const deta = Deta("c08ztmvr_6jWPJ2XjugHwifu3WkYscye7GP4gCgom");
+const db = deta.Base("diarys");
+const diaryPhotosDB = deta.Drive("diary_photos");
 
 const CardContainer = styled(Card)({
   marginTop: 10,
@@ -66,11 +68,11 @@ export const Diary = (props) => {
     setIsLoading(true);
     const fetchPhotos = async () => {
       try {
-        const storedPhoto = localStorage.getItem(diaryPhotos[0]);
+        const storedPhoto = localStorage.getItem(diaryPhotos[0])
         //cache & stored => getStored, setPhoto
-        if (cachePhoto && storedPhoto) {
-          setPhoto(storedPhoto);
-        } else {
+        if(cachePhoto && storedPhoto){
+          setPhoto(storedPhoto)
+        }else{
           //no cache & no stored => reader, setPhoto
           const photoBlobData = await diaryPhotosDB.get(diaryPhotos[0]);
           let reader = new FileReader();
@@ -78,10 +80,10 @@ export const Diary = (props) => {
           reader.onload = () => {
             setPhoto(reader.result);
             //cache & no stored => reader, setPhoto, setStored
-            cachePhoto && localStorage.setItem(diaryPhotos[0], reader.result);
+            cachePhoto && localStorage.setItem(diaryPhotos[0],reader.result) 
           };
           //no cache & stored => reader, setPhoto, removeStored
-          storedPhoto && localStorage.removeItem(diaryPhotos[0]);
+          storedPhoto && localStorage.removeItem(diaryPhotos[0]) 
         }
         setIsLoading(false);
       } catch (error) {

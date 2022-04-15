@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { Diary } from "../components/Diary";
+import { Deta } from "deta";
 import { styled } from "@material-ui/core/styles";
 import { getTimeString } from "../utils/DateUtils";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import { getDetaDB } from "../utils/deta";
 
 const DiarysContainer = styled("div")({
   paddingBottom: 65,
@@ -11,21 +11,22 @@ const DiarysContainer = styled("div")({
   flexDirection: "column",
 });
 
-const db = getDetaDB("diarys");
+const deta = Deta("c08ztmvr_6jWPJ2XjugHwifu3WkYscye7GP4gCgom");
+const db = deta.Base("diarys");
 
 const setNumOfCachedPhotos = (diarys, n) => {
   let cachePhotoCounter = 0;
-  const configuredDiarys = diarys.map((diary) => {
-    if (diary.photos.length === 0 || cachePhotoCounter >= n) {
-      diary.cachePhoto = false;
-    } else {
-      diary.cachePhoto = true;
-      cachePhotoCounter++;
-    }
-    return diary;
-  });
+      const configuredDiarys = diarys.map((diary) => {
+        if(diary.photos.length === 0 || cachePhotoCounter >= n){
+          diary.cachePhoto = false
+        }else{
+          diary.cachePhoto = true;
+          cachePhotoCounter++;
+        }
+        return diary
+      })
   return configuredDiarys;
-};
+}
 
 export const Diarys = () => {
   const [diarys, setDiarys] = useState([]);
@@ -80,7 +81,7 @@ export const Diarys = () => {
             diaryContent={content}
             diaryReplys={reply}
             diaryPhotos={photos}
-            cachePhoto={cachePhoto}
+            cachePhoto = {cachePhoto}
             fetchAllDiarys={fetchAllDiarys}
           />
         );
