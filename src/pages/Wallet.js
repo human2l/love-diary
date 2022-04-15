@@ -1,12 +1,10 @@
-import { Deta } from "deta";
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 import Typography from "@material-ui/core/Typography";
 import { styled } from "@material-ui/core/styles";
 import walletSVG from "../assets/wallet.svg";
+import { getDetaDB } from "../utils/deta";
 
-const deta = Deta("c08ztmvr_6jWPJ2XjugHwifu3WkYscye7GP4gCgom");
-const db = deta.Base("wallet");
-
+const db = getDetaDB("wallet");
 
 const WalletContainer = styled("div")({
   paddingTop: "100px",
@@ -18,7 +16,7 @@ const WalletContainer = styled("div")({
 });
 
 const ItemContainer = styled("div")({
-  marginTop:20,
+  marginTop: 20,
   display: "flex",
   flexDirection: "column",
   justifyContent: "center",
@@ -29,32 +27,30 @@ export const Wallet = () => {
   const [danMoney, setDanMoney] = useState("");
   const getDanMoney = async () => {
     try {
-      const danMoney = await db.get('944ej0cczecy')
+      const danMoney = await db.get("944ej0cczecy");
       setDanMoney(danMoney.money);
-    } catch (error) {
-      
-    }
-  }
+    } catch (error) {}
+  };
   useEffect(() => {
-    getDanMoney()
-  }, [])
-  
+    getDanMoney();
+  }, []);
+
   return (
     <WalletContainer>
-      <img src={walletSVG} alt="wallet" height="50px" width="50px"/>
+      <img src={walletSVG} alt="wallet" height="50px" width="50px" />
       <ItemContainer>
-      <Typography color="initial" variant="h5">
-        蛋蛋账户余额
-      </Typography>
-      <Typography color="textPrimary" variant="h5">
-        $ {danMoney}
-      </Typography>
-      <Typography color="initial" variant="h5">
-        凯凯账户余额
-      </Typography>
-      <Typography color="secondary" variant="h5">
-        灰常多，老有钱了
-      </Typography>
+        <Typography color="initial" variant="h5">
+          蛋蛋账户余额
+        </Typography>
+        <Typography color="textPrimary" variant="h5">
+          $ {danMoney}
+        </Typography>
+        <Typography color="initial" variant="h5">
+          凯凯账户余额
+        </Typography>
+        <Typography color="secondary" variant="h5">
+          灰常多，老有钱了
+        </Typography>
       </ItemContainer>
     </WalletContainer>
   );

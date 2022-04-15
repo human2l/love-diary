@@ -1,4 +1,3 @@
-import { Deta } from "deta";
 import { useState } from "react";
 import { styled } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
@@ -10,10 +9,10 @@ import Card from "@material-ui/core/Card";
 import CardMedia from "@material-ui/core/CardMedia";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import { getFileExtensionName } from "../utils/fileUtils";
+import { getDetaDB, getDetaDrive } from "../utils/deta";
 
-const deta = Deta("c08ztmvr_6jWPJ2XjugHwifu3WkYscye7GP4gCgom");
-const db = deta.Base("diarys");
-const diaryPhotosDB = deta.Drive("diary_photos");
+const db = getDetaDB("diarys");
+const diaryPhotosDB = getDetaDrive("diary_photos");
 
 const NewDiaryContainer = styled("div")({
   paddingTop: 20,
