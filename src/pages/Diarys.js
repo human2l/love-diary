@@ -4,6 +4,7 @@ import { styled } from "@material-ui/core/styles";
 import { getTimeString } from "../utils/DateUtils";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { getDetaDB } from "../utils/deta";
+import { addNewDiary, createDiarys } from "../utils/airtable";
 
 const DiarysContainer = styled("div")({
   paddingBottom: 65,
@@ -30,13 +31,29 @@ const setNumOfCachedPhotos = (diarys, n) => {
 export const Diarys = () => {
   const [diarys, setDiarys] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [migrated, setMigrated] = useState(false);
+  const [migrateDiarys, setMigrateDiarys] = useState({});
   const fetchAllDiarys = async () => {
+    if (migrated) return;
     setIsLoading(true);
     try {
       const { items: allDiarys } = await db.fetch();
       const orderedDiarys = allDiarys.sort((diaryA, diaryB) =>
         diaryA.time < diaryB.time ? 1 : -1
       );
+      console.log(orderedDiarys);
+      const migrateDiarys = orderedDiarys.map((diary) => {
+        const { cachePhoto, key, ...newDiary } = diary;
+        return newDiary;
+      });
+      console.log(migrateDiarys);
+      // await createDiarys(migrateDiarys);
+      // setMigrateDiarys(migrateDiarys)
+      while (migrateDiarys.length > 0) {
+        await addNewDiary(migrateDiarys.pop());
+      }
+      setMigrated(true);
+      return;
 
       const cachedPhotosDiarys = setNumOfCachedPhotos(orderedDiarys, 3);
 
